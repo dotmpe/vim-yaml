@@ -24,10 +24,17 @@ syn match yamlBlock "[\[\]\{\}\|\>]"
 syn match yamlOperator "[?^+-]\|=>"
 
 syn region yamlComment	start="\#" end="$"
-syn match yamlIndicator	"#YAML:\S\+"
+syn match  yamlDirective "%YAML\s\+[0-9\.]\+"
+syn match  yamlDirective "%TAG\s\+.\+"
+syn match  yamlDocStart "^---"
+syn match  yamlDocEnd "^\.\.\.$"
 
 syn region yamlString	start="'" end="'" skip="\\'"
 syn region yamlString	start='"' end='"' skip='\\"' contains=yamlEscape
+syn region yamlMultiLineString start=/'''/ end=/'''/ contains=@Spell
+
+"syn match  yamlLongString /\%^'''\_.\{-}---$/ contains=@Spell
+"
 syn match  yamlEscape	+\\[abfnrtv'"\\]+ contained
 syn match  yamlEscape	"\\\o\o\=\o\=" contained
 syn match  yamlEscape	"\\x\x\+" contained
@@ -45,7 +52,9 @@ syn match  yamlAlias	"*\S\+"
 " Setupt the hilighting links
 
 hi link yamlConstant Keyword
-hi link yamlIndicator PreCondit
+hi link yamlDirective PreCondit
+hi link yamlDocStart Operator
+hi link yamlDocEnd Operator
 hi link yamlAnchor	Function
 hi link yamlAlias	Function
 hi link yamlKey		Identifier
@@ -56,5 +65,6 @@ hi link yamlBlock	Operator
 hi link yamlOperator	Operator
 hi link yamlDelimiter	Delimiter
 hi link yamlString	String
+hi link yamlMultiLineString	 String
 hi link yamlEscape	Special
 
